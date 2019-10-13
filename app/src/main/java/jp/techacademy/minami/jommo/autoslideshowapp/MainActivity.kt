@@ -55,6 +55,8 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (cursor.moveToFirst()) {
+
+            /**
             var imgUriList:MutableList<String> = mutableListOf("zero")
 
             do {
@@ -67,14 +69,14 @@ class MainActivity : AppCompatActivity() {
             } while (cursor.moveToNext())
 
             for((i,a) in imgUriList.withIndex()){Log.d("ANDROID",  "imgUriList[${i}] = ${a}")}
+            **/
 
-            /**
             val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
             val id = cursor.getLong(fieldIndex)
             val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
 
             imageView.setImageURI(imageUri)
-            **/
+
         }
         cursor.close()
     }
