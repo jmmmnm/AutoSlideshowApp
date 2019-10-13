@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (cursor.moveToFirst()) {
-            var imgUrlList:MutableList<String> = mutableListOf("")
+            var imgUriList:MutableList<String> = mutableListOf("zero")
 
             do {
                 // indexからIDを取得し、そのIDから画像のURIを取得する
@@ -63,9 +63,10 @@ class MainActivity : AppCompatActivity() {
                 val id = cursor.getLong(fieldIndex)
                 val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
 
-                Log.d("ANDROID", "URI : " + imageUri.toString())
-                
+                imgUriList.add(imageUri.toString())
             } while (cursor.moveToNext())
+
+            for((i,a) in imgUriList.withIndex()){Log.d("ANDROID",  "imgUriList[${i}] = ${a}")}
 
             /**
             val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
