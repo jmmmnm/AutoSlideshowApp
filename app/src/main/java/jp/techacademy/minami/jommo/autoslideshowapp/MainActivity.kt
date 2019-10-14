@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import android.provider.MediaStore
 import android.content.ContentUris
+import android.net.Uri
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -56,26 +57,21 @@ class MainActivity : AppCompatActivity() {
 
         if (cursor.moveToFirst()) {
 
-            /**
-            var imgUriList:MutableList<String> = mutableListOf("zero")
+
+            var imgUriList:MutableList<Uri> = mutableListOf()
 
             do {
                 // indexからIDを取得し、そのIDから画像のURIを取得する
                 val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
                 val id = cursor.getLong(fieldIndex)
                 val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
-
-                imgUriList.add(imageUri.toString())
+                imgUriList.add(imageUri)
             } while (cursor.moveToNext())
 
+            imgUriList.add(0,imgUriList[0])     // とにかくゼロは使いたくない
             for((i,a) in imgUriList.withIndex()){Log.d("ANDROID",  "imgUriList[${i}] = ${a}")}
-            **/
 
-            val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-            val id = cursor.getLong(fieldIndex)
-            val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
-
-            imageView.setImageURI(imageUri)
+            imageView.setImageURI(imgUriList[3])
 
         }
         cursor.close()
