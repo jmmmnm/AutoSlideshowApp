@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         if(0<lNum && lNum<lLen)
         imageView.setImageURI(imgUriList[lNum])
-
+        textView.text = "${imgUriList[lNum]}"
 
 
     }
