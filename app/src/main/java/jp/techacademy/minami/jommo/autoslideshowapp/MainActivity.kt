@@ -14,6 +14,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val PERMISSIONS_REQUEST_CODE = 100
+    var imgUriList:MutableList<Uri> = mutableListOf()
+    var lNum:Int = 1
+    var lLen:Int = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,33 @@ class MainActivity : AppCompatActivity() {
         } else {
             getContentsInfo()
         }
+
+        back_button.setOnClickListener {
+            lNum--
+            setImage(lNum)
+        }
+        pause_button.setOnClickListener{
+        }
+        forward_button.setOnClickListener{
+            lNum++
+            setImage(lNum)
+        }
+
+    }
+
+    private fun setImage(ln:Int){
+
+        if(lNum==lLen){
+            lNum = 1
+        }else if(ln==0){
+            lNum = lLen
+        }
+
+        if(0<lNum && lNum<lLen)
+        imageView.setImageURI(imgUriList[lNum])
+
+
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -43,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                 }
         }
     }
+
 
     private fun getContentsInfo() {
         // 画像の情報を取得する
@@ -55,10 +87,8 @@ class MainActivity : AppCompatActivity() {
                 null // ソート (null ソートなし)
         )
 
+
         if (cursor.moveToFirst()) {
-
-
-            var imgUriList:MutableList<Uri> = mutableListOf()
 
             do {
                 // indexからIDを取得し、そのIDから画像のURIを取得する
@@ -68,12 +98,12 @@ class MainActivity : AppCompatActivity() {
                 imgUriList.add(imageUri)
             } while (cursor.moveToNext())
 
+            lLen = imgUriList.count()
             imgUriList.add(0,imgUriList[0])     // とにかくゼロは使いたくない
             for((i,a) in imgUriList.withIndex()){Log.d("ANDROID",  "imgUriList[${i}] = ${a}")}
-
-            imageView.setImageURI(imgUriList[3])
-
         }
+        setImage(lNum)
         cursor.close()
+
     }
 }

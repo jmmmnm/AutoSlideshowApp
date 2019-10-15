@@ -12,34 +12,34 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:id="@+id/imageView" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+
+    <Button
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/imageView"
-        android:gravity="center">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="戻る"
+        android:id="@+id/back_button"/>
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="戻る"
-            android:id="@+id/back_button"/>
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="再生/停止"
+        android:id="@+id/pause_button"/>
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="再生/停止"
-            android:id="@+id/pause_button"/>
-
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="進む"
-            android:id="@+id/Forward_button"/>
-    </LinearLayout>
-
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="進む"
+        android:id="@+id/forward_button"/>
 
 </RelativeLayout>
