@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val PERMISSIONS_REQUEST_CODE = 100
 
     var imgUriList:MutableList<Uri> = mutableListOf()
-    var listNum:Int = 1
+    var listNum:Int = 0
     var listLen:Int = 1
 
     private var mTimer: Timer? = null
@@ -46,18 +46,23 @@ class MainActivity : AppCompatActivity() {
 
 
         back_button.setOnClickListener {
-            if (mTimer == null)
+            if (mTimer == null && listNum != 0)
+            {
                 listNum--
                 setImage(listNum)
+            }
         }
+
         forward_button.setOnClickListener{
-            if (mTimer == null)
+            if (mTimer == null && listNum != 0)
+            {
                 listNum++
                 setImage(listNum)
+            }
         }
 
         start_button.setOnClickListener{
-            if (mTimer == null){
+            if (mTimer == null && listNum != 0){
                 hyoji()
                 mTimer = Timer()
                 mTimer!!.schedule(object : TimerTask() {
@@ -68,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }, 2000, 2000)
-            }else{
+            }else if(listNum != 0){
                 hyoji()
                 mTimer!!.cancel()
                 mTimer = null
@@ -80,10 +85,13 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             PERMISSIONS_REQUEST_CODE ->
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("ANDROID", "許可された")
                     getContentsInfo()
                 } else {
-                    Log.d("ANDROID", "許可されなかった")
+                    textView.text = "許可されなかった"
+                    start_button.text=""
+                    back_button.text = ""
+                    forward_button.text=""
+
                 }
         }
     }
@@ -139,6 +147,7 @@ class MainActivity : AppCompatActivity() {
             imgUriList.add(0,imgUriList[0])     // とにかくゼロは使いたくない
             for((i,a) in imgUriList.withIndex()){Log.d("ANDROID",  "imgUriList[${i}] = ${a}")}
         }
+        listNum = 1
         setImage(listNum)
         cursor.close()
 
