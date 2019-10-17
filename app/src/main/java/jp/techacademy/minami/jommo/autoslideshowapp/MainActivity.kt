@@ -46,12 +46,14 @@ class MainActivity : AppCompatActivity() {
 
 
         back_button.setOnClickListener {
-            listNum--
-            setImage(listNum)
+            if (mTimer == null)
+                listNum--
+                setImage(listNum)
         }
-                forward_button.setOnClickListener{
-            listNum++
-            setImage(listNum)
+        forward_button.setOnClickListener{
+            if (mTimer == null)
+                listNum++
+                setImage(listNum)
         }
 
         start_button.setOnClickListener{
