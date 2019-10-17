@@ -9,14 +9,20 @@ import android.util.Log
 import android.provider.MediaStore
 import android.content.ContentUris
 import android.net.Uri
+import android.os.Handler
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private val PERMISSIONS_REQUEST_CODE = 100
+
     var imgUriList:MutableList<Uri> = mutableListOf()
-    var lNum:Int = 1
-    var lLen:Int = 1
+    var listNum:Int = 1
+    var listLen:Int = 1
+
+    private var mTimer: Timer? = null
+    private var mHandler = Handler()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,32 +44,59 @@ class MainActivity : AppCompatActivity() {
             getContentsInfo()
         }
 
+
         back_button.setOnClickListener {
-            lNum--
-            setImage(lNum)
+            listNum--
+            setImage(listNum)
         }
-        pause_button.setOnClickListener{
-        }
-        forward_button.setOnClickListener{
-            lNum++
-            setImage(lNum)
+                forward_button.setOnClickListener{
+            listNum++
+            setImage(listNum)
         }
 
+        start_button.setOnClickListener{
+            if (mTimer == null){
+                hyoji()
+                mTimer = Timer()
+                mTimer!!.schedule(object : TimerTask() {
+                    override fun run() {
+                        mHandler.post {
+                            listNum++
+                            setImage(listNum)
+                        }
+                    }
+                }, 2000, 2000)
+            }else{
+                hyoji()
+                mTimer!!.cancel()
+                mTimer = null
+            }
+        }
+    }
+
+    private fun hyoji(){
+        if(mTimer == null){
+            start_button.text="停止"
+            back_button.text = ""
+            forward_button.text=""
+        }else{
+            start_button.text="再生"
+            back_button.text = "戻る"
+            forward_button.text="進む"
+        }
     }
 
     private fun setImage(ln:Int){
 
-        if(lNum==lLen){
-            lNum = 1
+        if(listNum==listLen){
+            listNum = 1
         }else if(ln==0){
-            lNum = lLen
+            listNum = listLen
         }
 
-        if(0<lNum && lNum<lLen)
-        imageView.setImageURI(imgUriList[lNum])
-        textView.text = "${imgUriList[lNum]}"
-
-
+        if(0<listNum && listNum<listLen)
+        imageView.setImageURI(imgUriList[listNum])
+        textView.text = "${imgUriList[listNum]}"
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -98,11 +131,11 @@ class MainActivity : AppCompatActivity() {
                 imgUriList.add(imageUri)
             } while (cursor.moveToNext())
 
-            lLen = imgUriList.count()
+            listLen = imgUriList.count()
             imgUriList.add(0,imgUriList[0])     // とにかくゼロは使いたくない
             for((i,a) in imgUriList.withIndex()){Log.d("ANDROID",  "imgUriList[${i}] = ${a}")}
         }
-        setImage(lNum)
+        setImage(listNum)
         cursor.close()
 
     }
