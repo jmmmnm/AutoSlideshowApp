@@ -76,6 +76,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE ->
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("ANDROID", "許可された")
+                    getContentsInfo()
+                } else {
+                    Log.d("ANDROID", "許可されなかった")
+                }
+        }
+    }
+
     private fun hyoji(){
         if(mTimer == null){
             start_button.text="停止"
@@ -100,16 +112,6 @@ class MainActivity : AppCompatActivity() {
         imageView.setImageURI(imgUriList[listNum])
         textView.text = "${imgUriList[listNum]}"
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_REQUEST_CODE ->
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getContentsInfo()
-                }
-        }
-    }
-
 
     private fun getContentsInfo() {
         // 画像の情報を取得する
